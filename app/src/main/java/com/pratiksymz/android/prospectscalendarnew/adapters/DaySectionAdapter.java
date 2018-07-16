@@ -4,6 +4,7 @@ import android.content.Context;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -12,11 +13,25 @@ import android.widget.TextView;
 import com.pratiksymz.android.prospectscalendarnew.R;
 import com.pratiksymz.android.prospectscalendarnew.models.DayResult;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.List;
+import java.util.Locale;
 
 public class DaySectionAdapter extends RecyclerView.Adapter<DaySectionAdapter.ViewHolder> {
     private Context mContext;
     private List<DayResult> mDayResults;
+
+    /**
+     * Input Date Format
+     */
+    SimpleDateFormat dFormat = new SimpleDateFormat("dd-MM-yyyy", Locale.US);
+
+    /**
+     * Output Date Format
+     */
+    SimpleDateFormat dFormatFinal = new SimpleDateFormat("dd MMM yy", Locale.US);
 
     public DaySectionAdapter(Context context, List<DayResult> dayResults) {
         mContext = context;
@@ -41,8 +56,15 @@ public class DaySectionAdapter extends RecyclerView.Adapter<DaySectionAdapter.Vi
         TextView mDate =  viewHolder.mDayDate;
         TextView mDateTotal = viewHolder.mDayExpenseTotal;
 
-        mDate.setText(dayResult.getDate());
-        mDateTotal.setText(String.valueOf(dayResult.getDateData().getDayTotal()));
+        Date date = null;
+        try {
+            date = dFormat.parse(dayResult.getDate());
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+
+        mDate.setText(dFormatFinal.format(date));
+        mDateTotal.setText("Rs. " + String.valueOf(dayResult.getDateData().getDayTotal()));
 
         RecyclerView dayExpensesView = viewHolder.mDayExpensesView;
         dayExpensesView.setLayoutManager(new LinearLayoutManager(mContext));

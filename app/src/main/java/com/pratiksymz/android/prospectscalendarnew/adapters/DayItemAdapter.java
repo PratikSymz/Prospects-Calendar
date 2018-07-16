@@ -40,7 +40,10 @@ public class DayItemAdapter extends RecyclerView.Adapter<DayItemAdapter.ViewHold
         // Get the current item
         DayItem dayItem = mDayItems.get(position);
 
-        viewHolder.category.setText(dayItem.getCategory());
+        viewHolder.category.setText(
+                dayItem.getCategory().substring(0, 1).toUpperCase()
+                        + dayItem.getCategory().substring(1)
+        );
 
         Drawable gradient;
         String color = null;
@@ -84,10 +87,13 @@ public class DayItemAdapter extends RecyclerView.Adapter<DayItemAdapter.ViewHold
 
         viewHolder.categoryGradient.setImageDrawable(gradient);
 
-        viewHolder.paymentMethod.setText(dayItem.getPaymentMethod());
+        viewHolder.paymentMethod.setText(
+                dayItem.getPaymentMethod().substring(0, 1).toUpperCase()
+                        + dayItem.getPaymentMethod().substring(1)
+        );
         viewHolder.paymentMethod.setTextColor(Color.parseColor(color));
 
-        viewHolder.amount.setText(String.valueOf(dayItem.getAmount()));
+        viewHolder.amount.setText("Rs. " + String.valueOf(dayItem.getAmount()));
     }
 
     @Override
